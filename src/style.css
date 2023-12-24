@@ -1,20 +1,29 @@
 body {
-    font-size: 20px;
-    font-family: sans-serif;
+    font-size: 24px;
+    font-family: 'Alegreya', serif;
+}
+
+.falling-text-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.falling-text-container p {
+    margin: 2em;
 }
 
 .hovered {
     opacity: 0;
+    transition: opacity 1s;
 }
 
 .hovered:hover {
     opacity: .3;
-    transition: opacity 1s;
+    transition: opacity .1s;
 }
 
 .falling {
     position: fixed;
-    // color: #800;
     z-index: 200;
     animation: fallingWord linear 20s;
 }
