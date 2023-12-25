@@ -4,13 +4,11 @@
     // This makes them "disappear" from the page, while still filling up space.
     const HOVERED_CLASS_NAME = "hovered";
 
-    // Get thext from the <script id="source-text"> tag
-    const rawText = document.getElementById("source-text").textContent;
+    // Container for the text to be processed
     const textContainer = document.getElementById("text");
 
-    // Render the "plain" text obtained earlier into the appropriate markup for the animation.
-    // Each line becomes a paragraph, and each word is wrapped in a <span class="word">.
-    renderTextMarkup(rawText, textContainer);
+    // Wrap all words in a <span class="word"> tag
+    wrapWordsInText(textContainer);
 
     // Attach event handlers to each <span class="word"> tag
     textContainer.querySelectorAll(".word").forEach(word => {
@@ -95,29 +93,30 @@ function makeFallingClone(element) {
 }
 
 
-function splitText(text) {
-    return text
-    // Split each line of text
-	.split(/\n/)
-    // Remove white space at the beginning / end of each line,
-    // then split each line into words.
-	.map(para => para.trim(/\s+/).split(/\s+/))
-    // Remove empty lines
-	.filter(para => para.length > 0);
+function wrapWordsInText(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+	// Wrap all the words in text nodes inside a <span class="word">
+	let words = textToWords(node.textContent);
+	node.replaceWith(...words);
+    }
+    else {
+	// Recursively process.
+	// Use Array.from() so the node list doesn't change during iteration.
+	Array.from(node.childNodes).forEach(node => {
+	    wrapWordsInText(node);
+	})
+    }
 }
 
 
-function renderTextMarkup(text, container) {
-    let paras = splitText(text);
-    paras.forEach(para => {
-	let pEl = document.createElement("p");
-	para.forEach(word => {
-	    let wEl = document.createElement("span");
-	    wEl.classList.add("word")
-	    wEl.textContent = word;
-	    pEl.append(wEl);
-	    pEl.append(" ");
-	});
-	container.append(pEl);
+function textToWords(text) {
+    let elements = [];
+    text.trim(/\s+/).split(/\s+/).filter(x=>!!x).forEach(word => {
+	let wEl = document.createElement("span");
+	wEl.classList.add("word")
+	wEl.textContent = word;
+	elements.push(wEl);
+	elements.push(document.createTextNode(" ")); // Space after the word
     });
+    return elements;
 }
