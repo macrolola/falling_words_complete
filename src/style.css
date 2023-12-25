@@ -3,13 +3,14 @@ body {
     font-family: 'Alegreya', serif;
 }
 
-.falling-text-container {
+.page {
+    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .falling-text-container p {
-    margin: 2em;
+    margin: 2em 0;
 }
 
 .hovered {
@@ -48,4 +49,16 @@ body {
     to {
 	transform: rotate(360deg);
     }
+}
+
+.red {
+    color: #f00;
+}
+
+.highlighted {
+    background: #ff0;
+}
+
+.censored {
+    background: #000;
 }

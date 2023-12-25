@@ -35,7 +35,6 @@
 	// - Ctrl+click creates another falling clone of the word
 	word.addEventListener("click", event => {
 	    let el = event.target;
-	    console.log("Click", event.ctrlKey);
 
 	    if (event.ctrlKey) {
 		makeFallingClone(el);
@@ -69,6 +68,17 @@ function makeFallingClone(element) {
 
     let newElement = document.createElement("span");
     newElement.classList.add("falling");
+
+    // Copy over some style attributes.
+    // We don't want to copy *everything* so it's best to do this manually on a case-by-case basis.
+    let style = window.getComputedStyle(element);
+    newElement.style.fontSize = style.fontSize;
+    newElement.style.fontWeight = style.fontWeight;
+    newElement.style.fontStyle = style.fontStyle;
+    newElement.style.textDecoration = style.textDecoration;
+    newElement.style.color = style.color;
+
+    newElement.style.position = "fixed";
     newElement.style.top = top;
     newElement.style.left = left;
     newElement.style.animationDuration = randomAnimationDuration(2, 10);
